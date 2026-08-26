@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Add Enquiry' if mode == 'add' else 'Edit Enquiry' }}{% endblock %}
+
+{% block content %}
+{% set fd = form_data if form_data is defined else {} %}
+{% set errs = errors if errors is defined else {} %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 fw-bold mb-4">{{ 'Add Student Enquiry' if mode == 'add' else 'Edit Student Enquiry' }}</h1>
+
+                <form method="post" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label">Enquiry Date</label>
+                        <input class="form-control {% if errs.get('enquiry_date') %}is-invalid{% endif %}" name="enquiry_date" type="date" value="{{ fd.get('enquiry_date', enquiry.enquiry_date.isoformat() if enquiry and enquiry.enquiry_date else '') }}" />
+                        {% if errs.get('enquiry_date') %}<div class="field-error">{{ errs.get('enquiry_date') }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">First Name</label>
+                        <input class="form-control {% if errs.get('first_name') %}is-invalid{% endif %}" name="first_name" value="{{ fd.get('first_name', enquiry.first_name if enquiry else '') }}" />
+                        {% if errs.get('first_name') %}<div class="field-error">{{ errs.get('first_name') }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Last Name</label>
+                        <input class="form-control {% if errs.get('last_name') %}is-invalid{% endif %}" name="last_name" value="{{ fd.get('last_name', enquiry.last_name if enquiry else '') }}" />
+                        {% if errs.get('last_name') %}<div class="field-error">{{ errs.get('last_name') }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mobile</label>
+                        <input class="form-control {% if errs.get('mobile') %}is-invalid{% endif %}" name="mobile" value="{{ fd.get('mobile', enquiry.mobile if enquiry else '') }}" />
+                        {% if errs.get('mobile') %}<div class="field-error">{{ errs.get('mobile') }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input class="form-control {% if errs.get('email') %}is-invalid{% endif %}" name="email" type="email" value="{{ fd.get('email', enquiry.email if enquiry else '') }}" />
+                        {% if errs.get('email') %}<div class="field-error">{{ errs.get('email') }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label d-block">Gender</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male" {% if fd.get('gender', enquiry.gender if enquiry else '') == 'male' %}checked{% endif %} />
+                            <label class="form-check-label" for="genderMale">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female" {% if fd.get('gender', enquiry.gender if enquiry else '') == 'female' %}checked{% endif %} />
+                            <label class="form-check-label" for="genderFemale">Female</label>
+                        </div>
+                        {% if errs.get('gender') %}<div class="field-error">{{ errs.get('gender') }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input class="form-check-input" type="checkbox" id="followup_calls" name="followup_calls" {% if fd.get('followup_calls', enquiry.followup_calls if enquiry else False) %}checked{% endif %} />
+                        <label class="form-check-label" for="followup_calls">Follow-up calls required</label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Course</label>
+                        <select class="form-select" name="course_id">
+                            <option value="">Select Course</option>
+                            {% for course in courses %}
+                            <option value="{{ course.id }}" {% if (enquiry and enquiry.course_id == course.id) or (fd.get('course_id')|string == course.id|string) %}selected{% endif %}>
+                                {{ course.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                        <a href="{{ url_for('main.enquiries_list') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

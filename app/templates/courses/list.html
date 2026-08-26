@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Courses{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h1 class="h3 fw-bold m-0">Course Details</h1>
+    <a href="{{ url_for('main.courses_add') }}" class="btn btn-primary">
+        <i class="fa-solid fa-plus me-1"></i>Add Course
+    </a>
+</div>
+
+<div class="table-responsive card border-0 shadow-sm">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Fee</th>
+                <th>Trainer</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.name }}</td>
+                <td>{{ "%.2f"|format(course.fee) }}</td>
+                <td>
+                    {% if course.trainer %}
+                        {{ course.trainer.first_name }} {{ course.trainer.last_name }}
+                    {% else %}
+                        <span class="text-muted">Not Assigned</span>
+                    {% endif %}
+                </td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('main.courses_edit', course_id=course.id) }}">Edit</a>
+                    <form class="d-inline" method="post" action="{{ url_for('main.courses_delete', course_id=course.id) }}" onsubmit="return confirm('Delete this course?');">
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center py-4 text-muted">No courses found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Trainers{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h1 class="h3 fw-bold m-0">Trainers List</h1>
+    <a href="{{ url_for('main.trainers_add') }}" class="btn btn-primary">
+        <i class="fa-solid fa-plus me-1"></i>Add Trainer
+    </a>
+</div>
+
+<div class="table-responsive card border-0 shadow-sm">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trainer in trainers %}
+            <tr>
+                <td>{{ trainer.first_name }}</td>
+                <td>{{ trainer.last_name }}</td>
+                <td>{{ trainer.mobile }}</td>
+                <td>{{ trainer.email }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('main.trainers_edit', trainer_id=trainer.id) }}">Edit</a>
+                    <form class="d-inline" method="post" action="{{ url_for('main.trainers_delete', trainer_id=trainer.id) }}" onsubmit="return confirm('Delete this trainer?');">
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-center py-4 text-muted">No trainers found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

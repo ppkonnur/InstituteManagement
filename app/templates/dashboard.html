@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h1 class="h3 fw-bold m-0">Dashboard</h1>
+    <span class="text-muted">Institute overview</span>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <h2>{{ counts.courses }}</h2>
+            <p>Courses</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <h2>{{ counts.trainers }}</h2>
+            <p>Trainers</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <h2>{{ counts.enquiries }}</h2>
+            <p>Enquiries</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <h2>{{ counts.enrolled }}</h2>
+            <p>Enrolled Students</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

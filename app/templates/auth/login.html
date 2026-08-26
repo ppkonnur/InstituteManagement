@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+{% set fd = form_data if form_data is defined else {} %}
+{% set errs = errors if errors is defined else {} %}
+<div class="row justify-content-center align-items-center min-vh-75">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg border-0 auth-card">
+            <div class="card-body p-4 p-md-5">
+                <h1 class="h3 fw-bold mb-2">Admin Login</h1>
+                <p class="text-muted mb-4">Sign in to manage courses, trainers, and enquiries.</p>
+
+                <form method="post" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input class="form-control {% if errs.get('username') %}is-invalid{% endif %}" name="username" value="{{ fd.get('username', '') }}" />
+                        {% if errs.get('username') %}<div class="field-error">{{ errs.get('username') }}</div>{% endif %}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control {% if errs.get('password') %}is-invalid{% endif %}" name="password" />
+                        {% if errs.get('password') %}<div class="field-error">{{ errs.get('password') }}</div>{% endif %}
+                    </div>
+                    <button class="btn btn-primary w-100" type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

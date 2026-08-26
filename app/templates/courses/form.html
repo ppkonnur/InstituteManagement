@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Add Course' if mode == 'add' else 'Edit Course' }}{% endblock %}
+
+{% block content %}
+{% set fd = form_data if form_data is defined else {} %}
+{% set errs = errors if errors is defined else {} %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 fw-bold mb-4">{{ 'Add Course' if mode == 'add' else 'Edit Course' }}</h1>
+
+                <form method="post" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label">Course Name</label>
+                        <input class="form-control {% if errs.get('name') %}is-invalid{% endif %}" name="name" value="{{ fd.get('name', course.name if course else '') }}" />
+                        {% if errs.get('name') %}<div class="field-error">{{ errs.get('name') }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Fee</label>
+                        <input class="form-control {% if errs.get('fee') %}is-invalid{% endif %}" name="fee" type="number" step="0.01" value="{{ fd.get('fee', course.fee if course else '') }}" />
+                        {% if errs.get('fee') %}<div class="field-error">{{ errs.get('fee') }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Trainer</label>
+                        <select class="form-select" name="trainer_id">
+                            <option value="">Select Trainer</option>
+                            {% for trainer in trainers %}
+                            <option value="{{ trainer.id }}" {% if (course and course.trainer_id == trainer.id) or (fd.get('trainer_id')|string == trainer.id|string) %}selected{% endif %}>
+                                {{ trainer.first_name }} {{ trainer.last_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                        <a href="{{ url_for('main.courses_list') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
